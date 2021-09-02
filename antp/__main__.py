@@ -51,7 +51,7 @@ def main(args):
   if "data" in d:
     d["data"] = d["data"].split(',')
 
-  check_files = ["template", "output", "data"] 
+  check_files = ["template", "data"] 
   for _x in check_files:
     if _x not in d:
       continue  
