@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="antp",
-    version="0.0.1",
+    version="0.0.2",
     author="anttin",
     author_email="muut.py@antion.fi",
     description="Python Template Processor for Jinja templates",
