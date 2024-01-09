@@ -1,3 +1,4 @@
+import sys
 from jinja2 import Template as JinjaTemplate
 
 
@@ -15,17 +16,14 @@ class Template(object):
 
     self._template = JinjaTemplate(self.text)
 
-
   @property
   def template(self):
     return self._template
-
 
   @staticmethod
   def load_text(filename):
     result = None
     if filename == '-':
-      import sys
       f = sys.stdin
     else:
       f = open(filename, 'r', encoding='utf8')

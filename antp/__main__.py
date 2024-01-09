@@ -1,22 +1,21 @@
+import json
 import os
 import sys
-
 from anoptions import Parameter, Options
+from .filters import set_filters
 from .template import Template
 from .processor import Processor
 
 
 def file_exists(filename):
-  return filename is not None and os.path.exists(filename) and os.path.isfile(filename)  
+  return filename is not None and os.path.exists(filename) and os.path.isfile(filename)
 
 
 def load_json(filename, default=None):
-  import json
   if filename == '-':
-    import sys
     f = sys.stdin
   elif file_exists(filename):
-    f = open(filename) 
+    f = open(filename, encoding='utf-8')
   else:
     return default
   with f as json_file:
@@ -25,16 +24,21 @@ def load_json(filename, default=None):
 
 
 def usage():
-  print("USAGE: python3 -m antp -t|--template <templatefile> [-o|--output <outputfile>] [-d|--data <json_datafile1,json_datafile2,...,json_datafileN]")
+  print(' '.join([
+      "USAGE: python3 -m antp",
+      "-t|--template <templatefile>",
+      "[-o|--output <outputfile>]",
+      "[-d|--data <json_datafile1,json_datafile2,...,json_datafileN]"
+  ]))
   sys.exit(1)
 
 
 def main(args):
   parameters = [
-    Parameter("template", str, "template", default='-'),
-    Parameter("output", str, "output", default='-'),
-    Parameter("data", str, "data"),
-    Parameter("help", Parameter.flag, "help")
+      Parameter("template", str, "template", default='-'),
+      Parameter("output", str, "output", default='-'),
+      Parameter("data", str, "data"),
+      Parameter("help", Parameter.flag, "help")
   ]
 
   opt = Options(parameters, args, 'antp')
@@ -48,28 +52,30 @@ def main(args):
     if x not in d:
       usage()
 
+  set_filters()
+
   if "data" in d:
     d["data"] = d["data"].split(',')
 
-  check_files = ["template", "data"] 
+  check_files = ["template", "data"]
   for _x in check_files:
     if _x not in d:
-      continue  
+      continue
     y = d[_x] if isinstance(d[_x], list) else [d[_x]]
     for fname in y:
       if not file_exists(fname) and fname != '-':
-        print("File {} does not exist -- exiting".format(fname))
+        print(f"File {fname} does not exist -- exiting")
         sys.exit(66)
 
-  template_data = { 
-    "data": {},
-    "env": os.environ
-  } 
+  template_data = {
+      "data": {},
+      "env": os.environ
+  }
 
   if "data" in d:
     _data = {}
     for fname in d["data"]:
-      _data = { **_data, **load_json(fname, {}) }
+      _data = {**_data, **load_json(fname, {})}
     template_data["data"] = _data
 
   t = Template(filename=d["template"])
