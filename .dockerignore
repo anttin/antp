@@ -105,4 +105,8 @@ venv.bak/
 # mypy
 .mypy_cache/
 
+
+.git
+.gitignore
+.github
 .DS_Store
