@@ -19,7 +19,4 @@ dependencies = [
       "Jinja2",
       "anoptions"
     ]
-version = "0.1.0"
-
-[tool.setuptools.packages.find]
-exclude = ["*"]
+version = "0.1.1"
