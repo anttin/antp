@@ -14,6 +14,13 @@ jobs:
     - name: Checkout this repository 
       uses: actions/checkout@v4
 
+    - name: Extract version from pyproject.toml
+      id: version
+      run: |
+        VERSION=$(grep -E '^version = ' pyproject.toml | sed 's/version = "\(.*\)"/\1/')
+        echo "version=$VERSION" >> $GITHUB_OUTPUT
+        echo "Extracted version: $VERSION"
+
     # prepare for multi arch images
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v3
@@ -38,9 +45,8 @@ jobs:
       with:
         images: ghcr.io/${{ github.repository }}
         flavor: latest=true
-        # generate Docker tags based on the GitHub run number
         tags: |
-          type=raw,value=${{ github.run_number }}
+          type=raw,value=${{ steps.version.outputs.version }}
 
     - name: Set local tags for act
       if: ${{ env.ACT }}
