@@ -2,6 +2,8 @@
 
 Module & app for processing Jinja template files with json data and environment variables.
 
+Note (February 2026): This project has switched from Docker Hub to GitHub Container Registry. The Docker Hub images (anttin/antp) will be removed in August 2026. Please update your deployments to use ghcr.io/anttin/antp instead.
+
 ## Installation
 
 ```shell
@@ -85,7 +87,7 @@ Environment variable FOO is bar.
 
 ## Docker container
 
-Containerized version of antp is also available from `anttin/antp`.
+Containerized version of antp is also available from `ghcr.io/anttin/antp`.
 
 ### Container usage
 
@@ -98,7 +100,7 @@ Our message to you is: {{ env["Message"] }}
 Sample run:
 
 ```shell
-docker run --rm -it -v /local/path/template:/antp/template -v /local/path/output_directory:/antp/output -e MESSAGE="Hello world" antp:latest
+docker run --rm -it -v /local/path/template:/antp/template -v /local/path/output_directory:/antp/output -e MESSAGE="Hello world" ghcr.io/anttin/antp:latest
 ```
 
 Sample output:
