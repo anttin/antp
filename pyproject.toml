@@ -9,7 +9,7 @@ authors = [
 ]
 description = "Python Template Processor for Jinja templates"
 readme = "README.md"
-requires-python = ">=3.7"
+requires-python = ">=3.14"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License",
